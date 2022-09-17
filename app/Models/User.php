@@ -2,49 +2,56 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; 
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
-    use Notifiable;
+    // use HasApiTokens, HasFactory, Notifiable;
+    // protected $table = 'user';
+    // protected $hidden = '[id]';
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id',
+        'first_name',
+        'password',
+        'gender',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
-    public function getJWTIdentifier()
-    {
-       return $this->getKey();
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function social(){
+        return $this->hasMany(Users::class,'user_id','id');
     }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-    public function social()
-    {
-        return $this->hasMany(UserSocial::class, 'user_id', 'id');
-    }
-
-    public function hasSocialLinked($service)
-    {
-        return (bool) $this->social->where('service', $service)->count();
+    public function hasSocialLinked($service){
+        return (bool) $this->social->where('service', $service)->count;
     }
 }

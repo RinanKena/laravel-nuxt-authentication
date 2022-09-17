@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\api\Auth;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Tymon\JWTAuth\JWTAuth;
+use App\Http\Controllers\Controller;
+
 
 class RegisterController extends Controller
 {
@@ -38,11 +39,13 @@ class RegisterController extends Controller
      * Create a new controller instance.
      *
      * @return void
-     */
+    */
+    /*
     public function __construct(JWTAuth $auth)
     {
         $this->auth = $auth;
     }
+    */
 
     /**
      * Handle a registration request for the application.
