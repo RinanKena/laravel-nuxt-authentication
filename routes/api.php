@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-USE App\Http\Controllers\LoginController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SocialLoginController;
 
 /*
@@ -17,15 +17,19 @@ use App\Http\Controllers\SocialLoginController;
 */
 
 
-Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function() {
+Route::group(['prefix' => '/auth', 'namespace' => 'Auth', ['middleware' => 'throttle:20,5']], function () {
+
     Route::get('/register', 'Auth\RegisterController@register');
     Route::get('/login', 'Auth\LoginController@login');
 
-    Route::get('/login/{service}', 'Auth\SocialLoginController@redirect');
-    Route::get('/login/{service}/callback', 'Auth\SocialLoginController@callback');
+    Route::get('/login/{service}', 'SocialLoginController@redirect');
+    Route::get('/login/{service}/callback', 'SocialLoginController@callback');
+
+    //Route::get('/login/{service}', [SocialLoginController::class, 'redirect']);
+   // Route::get('/login/{service}/callback', [SocialLoginController::class, 'callback']);
 });
 
-Route::group(['middleware' => 'jwt.auth'], function() {
+Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/me', 'MeController@index');
 
     Route::get('/auth/logout', 'MeController@logout');

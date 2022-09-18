@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
 namespace App\Http\Controllers\api\Auth;
+namespace Illuminate\Http\Request; 
+
 
 
 use App\Models\Account;
 use App\Models\User;
 use App\Models\UserSocial;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 use Spatie\FlareClient\Http\Exceptions\InvalidData;
@@ -19,13 +20,13 @@ class SocialLoginController extends Controller
 
     protected $auth;
 
+    
     public function __construct($auth)
     {
        // $this->middleware(['social', 'web']);
        $this->auth = $auth;
         $this->middleware(['social']);
     }
-
 
     public function redirect($service)
     {
